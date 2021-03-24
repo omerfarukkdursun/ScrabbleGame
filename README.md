@@ -1,1 +1,1 @@
-# ScrabbleGame
+Scrabble Game in JavaScript
