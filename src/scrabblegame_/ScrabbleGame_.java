@@ -179,6 +179,7 @@ public class ScrabbleGame_ {
                 for (Kare k : kutular) {
                     g.setColor(k.color);
                     g.fillRect(k.x, k.y, k.width, k.width);
+                    //g.drawOval(WIDTH, WIDTH, WIDTH, WIDTH);
 
                     g.setColor(Color.BLACK);
 
@@ -200,8 +201,11 @@ public class ScrabbleGame_ {
 
                         JLabel l = new JLabel(selectedLetter);
                         l.setBounds(k.x, k.y, 40, 40);
+                        
+                        
                         l.setBackground(Color.yellow);
                         jFrame.add(l);
+                       // jFrame.repaint();
 
                     }
 
