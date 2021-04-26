@@ -7,12 +7,21 @@ package scrabblegame_;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +33,12 @@ import javax.swing.JPanel;
  */
 public class ScrabbleGame_ {
 
+    public static Image p = gorsel("C:\\Users\\Fatih\\Desktop\\ScrableGame\\ScrabbleGame\\src\\scrabblegame_\\gorseller\\p.png");
+    public static Image u = gorsel("C:\\Users\\Fatih\\Desktop\\ScrableGame\\ScrabbleGame\\src\\scrabblegame_\\gorseller\\U.png");
+    public static boolean isP;
+    public static boolean isU;
+    public static ArrayList<Image> yazilanHarflerinResimleri = new ArrayList<Image>();
+    public static ArrayList<Point> yazilanHarflerinKordinatlari = new ArrayList<Point>();
     static int mouseClickX;
     static int mouseClickY;
     static String selectedLetter;
@@ -32,9 +47,32 @@ public class ScrabbleGame_ {
         String[] strArr = {"P", "Q", "R", "S", "T", "U", "V", "W"};
         Random rand = new Random();
         return strArr[rand.nextInt(6)];
+
+    }
+
+    public static BufferedImage gorsel(String s) {
+        BufferedImage bi = null;
+        try {
+            bi = ImageIO.read(new File(s));
+        } catch (IOException ex) {
+            Logger.getLogger(ScrabbleGame_.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return bi;
+
+    }
+
+    public static Point sigdir(int a, int b) {
+        int x = a / 40;
+        int y = b / 40;
+
+        Point p = new Point(x * 40, y * 40);
+        return p;
+
     }
 
     public static void main(String[] args) {
+
         JFrame jFrame = new JFrame();
 
         jFrame.setSize(618, 720);
@@ -51,6 +89,15 @@ public class ScrabbleGame_ {
             @Override
             public void actionPerformed(ActionEvent e) {
                 selectedLetter = b1.getText();
+                if (b1.getText() == "P") {
+                    isP = true;
+                    System.out.println("b1");
+
+                }
+                if (b1.getText() == "U") {
+                    isU = true;
+
+                }
             }
         });
 
@@ -62,7 +109,14 @@ public class ScrabbleGame_ {
         b2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("naber");
+                if (b2.getText() == "P") {
+                    isP = true;
+
+                }
+                if (b2.getText() == "U") {
+                    isU = true;
+
+                }
             }
         });
 
@@ -74,7 +128,14 @@ public class ScrabbleGame_ {
         b3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("naber");
+                if (b3.getText() == "P") {
+                    isP = true;
+
+                }
+                if (b3.getText() == "U") {
+                    isU = true;
+
+                }
             }
         });
 
@@ -86,7 +147,14 @@ public class ScrabbleGame_ {
         b4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("naber");
+                if (b4.getText() == "P") {
+                    isP = true;
+
+                }
+                if (b4.getText() == "U") {
+                    isU = true;
+
+                }
             }
         });
 
@@ -98,7 +166,14 @@ public class ScrabbleGame_ {
         b5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("naber");
+                if (b5.getText() == "P") {
+                    isP = true;
+
+                }
+                if (b5.getText() == "U") {
+                    isU = true;
+
+                }
             }
         });
 
@@ -109,7 +184,14 @@ public class ScrabbleGame_ {
         b6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("naber");
+                if (b6.getText() == "P") {
+                    isP = true;
+
+                }
+                if (b6.getText() == "U") {
+                    isU = true;
+
+                }
             }
         });
         JButton b7 = new JButton(RandomLetter());
@@ -120,7 +202,15 @@ public class ScrabbleGame_ {
         b7.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("naber");
+                if (b7.getText() == "P") {
+                    isP = true;
+
+                }
+                if (b7.getText() == "U") {
+                    isU = true;
+
+                }
+
             }
         });
 
@@ -187,6 +277,36 @@ public class ScrabbleGame_ {
                     g.drawLine(k.x, k.y, k.x + 40, k.y);
 
                 }
+                
+               
+                if (isP) {
+                    System.out.println(mouseClickX / 40 + " " + mouseClickY / 40);
+                    Point point = sigdir(mouseClickX, mouseClickY);
+                    yazilanHarflerinKordinatlari.add(point);
+                    yazilanHarflerinResimleri.add(p);
+                    
+                    
+                    System.out.println("tıklandı");
+                    isP = false;
+                }
+                if (isU) {
+                    System.out.println(mouseClickX / 40 + " " + mouseClickY / 40);
+                    Point point = sigdir(mouseClickX, mouseClickY);
+                    yazilanHarflerinKordinatlari.add(point);
+                    yazilanHarflerinResimleri.add(u);
+                   
+                    System.out.println("tıklandı");
+                    isU = false;
+                }
+                for (int i = 0; i <yazilanHarflerinResimleri.size() ; i++) {
+                    for (int j = 0; j < yazilanHarflerinKordinatlari.size(); j++) {
+                        if (i==j) {
+                             g.drawImage(yazilanHarflerinResimleri.get(i), yazilanHarflerinKordinatlari.get(i).x, yazilanHarflerinKordinatlari.get(i).y, this);
+                            
+                        }
+                    }
+                    
+                }
 
             }
         };
@@ -201,11 +321,10 @@ public class ScrabbleGame_ {
 
                         JLabel l = new JLabel(selectedLetter);
                         l.setBounds(k.x, k.y, 40, 40);
-                        
-                        
+
                         l.setBackground(Color.yellow);
                         jFrame.add(l);
-                       // jFrame.repaint();
+                        jFrame.repaint();
 
                     }
 
@@ -216,7 +335,7 @@ public class ScrabbleGame_ {
             @Override
             public void mousePressed(MouseEvent e) {
                 mouseClickX = Math.max(e.getX() - 18, 0);
-                mouseClickY = Math.max(e.getY() - 43, 0);
+                mouseClickY = Math.max(e.getY() - 53, 0);
             }
 
             @Override
