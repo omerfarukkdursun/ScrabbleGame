@@ -5,6 +5,7 @@
  */
 package scrabblegame_;
 
+import game.Message;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -42,6 +43,7 @@ public class ScrabbleGame_ {
     static int mouseClickX;
     static int mouseClickY;
     static String selectedLetter;
+    static int puan;
 
     public static String RandomLetter() {
         String[] strArr = {"P", "Q", "R", "S", "T", "U", "V", "W"};
@@ -71,11 +73,27 @@ public class ScrabbleGame_ {
 
     }
 
+    public static void SendToServer(String letter, Point p) {
+        Message msg = new Message(Message.Message_Type.Send);
+        ArrayList msgContent = new ArrayList();
+        msgContent.add(letter);
+        msgContent.add(p);
+        msg.content = msgContent;
+        Client.Send(msg);
+    }
+
+    public static void ReadFromServer(Message msg) {
+        ArrayList msgContent = (ArrayList) msg.content;
+        System.out.println(msgContent.get(0));
+    }
+
     public static void main(String[] args) {
 
         JFrame jFrame = new JFrame();
 
         jFrame.setSize(618, 720);
+
+        Client.Start("127.0.0.1", 2000);
 
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         LinkedList<Kare> kutular = new LinkedList<>();
@@ -91,7 +109,9 @@ public class ScrabbleGame_ {
                 selectedLetter = b1.getText();
                 if (b1.getText() == "P") {
                     isP = true;
+                    puan += 4;
                     System.out.println("b1");
+                    System.out.println(puan);
 
                 }
                 if (b1.getText() == "U") {
@@ -111,6 +131,7 @@ public class ScrabbleGame_ {
             public void actionPerformed(ActionEvent e) {
                 if (b2.getText() == "P") {
                     isP = true;
+                    puan += 4;
 
                 }
                 if (b2.getText() == "U") {
@@ -130,6 +151,8 @@ public class ScrabbleGame_ {
             public void actionPerformed(ActionEvent e) {
                 if (b3.getText() == "P") {
                     isP = true;
+                    puan += 4;
+                    System.out.println(puan);
 
                 }
                 if (b3.getText() == "U") {
@@ -149,6 +172,8 @@ public class ScrabbleGame_ {
             public void actionPerformed(ActionEvent e) {
                 if (b4.getText() == "P") {
                     isP = true;
+                    puan += 4;
+                    System.out.println(puan);
 
                 }
                 if (b4.getText() == "U") {
@@ -168,6 +193,8 @@ public class ScrabbleGame_ {
             public void actionPerformed(ActionEvent e) {
                 if (b5.getText() == "P") {
                     isP = true;
+                    puan += 4;
+                    System.out.println(puan);
 
                 }
                 if (b5.getText() == "U") {
@@ -186,6 +213,8 @@ public class ScrabbleGame_ {
             public void actionPerformed(ActionEvent e) {
                 if (b6.getText() == "P") {
                     isP = true;
+                    puan += 4;
+                    System.out.println(puan);
 
                 }
                 if (b6.getText() == "U") {
@@ -204,6 +233,8 @@ public class ScrabbleGame_ {
             public void actionPerformed(ActionEvent e) {
                 if (b7.getText() == "P") {
                     isP = true;
+                    puan += 4;
+                    System.out.println(puan);
 
                 }
                 if (b7.getText() == "U") {
@@ -277,15 +308,14 @@ public class ScrabbleGame_ {
                     g.drawLine(k.x, k.y, k.x + 40, k.y);
 
                 }
-                
-               
+
                 if (isP) {
                     System.out.println(mouseClickX / 40 + " " + mouseClickY / 40);
                     Point point = sigdir(mouseClickX, mouseClickY);
                     yazilanHarflerinKordinatlari.add(point);
                     yazilanHarflerinResimleri.add(p);
-                    
-                    
+                    SendToServer("P", point);
+
                     System.out.println("tıklandı");
                     isP = false;
                 }
@@ -294,18 +324,19 @@ public class ScrabbleGame_ {
                     Point point = sigdir(mouseClickX, mouseClickY);
                     yazilanHarflerinKordinatlari.add(point);
                     yazilanHarflerinResimleri.add(u);
-                   
+                    SendToServer("U", point);
+
                     System.out.println("tıklandı");
                     isU = false;
                 }
-                for (int i = 0; i <yazilanHarflerinResimleri.size() ; i++) {
+                for (int i = 0; i < yazilanHarflerinResimleri.size(); i++) {
                     for (int j = 0; j < yazilanHarflerinKordinatlari.size(); j++) {
-                        if (i==j) {
-                             g.drawImage(yazilanHarflerinResimleri.get(i), yazilanHarflerinKordinatlari.get(i).x, yazilanHarflerinKordinatlari.get(i).y, this);
-                            
+                        if (i == j) {
+                            g.drawImage(yazilanHarflerinResimleri.get(i), yazilanHarflerinKordinatlari.get(i).x, yazilanHarflerinKordinatlari.get(i).y, this);
+
                         }
                     }
-                    
+
                 }
 
             }
