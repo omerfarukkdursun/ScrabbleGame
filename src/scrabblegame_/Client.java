@@ -39,12 +39,24 @@ class Listen extends Thread {
                         break;
                     case Send:
                         ScrabbleGame_.ReadFromServer(received);
-                        
+
                         System.out.println("Client kısmına girdi");
                         ScrabbleGame_.jFrame.repaint();
-                        
 
                         break;
+                    case PuanSend:
+                        int p = (int) received.content;
+                        ScrabbleGame_.rakipPuan = p;
+                        ScrabbleGame_.bitirme++;
+                        break;
+                        
+                        
+                    case RakipBitir:
+                        ScrabbleGame_.puanHesapla();
+                        
+                        break;
+
+                        
                     case Selected:
 
                         break;

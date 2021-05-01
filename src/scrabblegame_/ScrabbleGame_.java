@@ -40,24 +40,21 @@ public class ScrabbleGame_ {
     public static boolean isU;
     public static ArrayList<Image> yazilanHarflerinResimleri = new ArrayList<Image>();
     public static ArrayList<Point> yazilanHarflerinKordinatlari = new ArrayList<Point>();
-    
-    public static harf uHarfi = new harf("U",u);
-    public static harf pHarfi = new harf("P",p);
-    
-    
+
+    public static harf uHarfi = new harf("U", u);
+    public static harf pHarfi = new harf("P", p);
+
     public static ArrayList<harf> harflerListesi = new ArrayList<harf>();
     public static ArrayList yazilanHarfler = new ArrayList();
-    
+
     public static ArrayList data = new ArrayList();
-    
-    
-    
-    
 
     static int mouseClickX;
     static int mouseClickY;
     static String selectedLetter;
     static int puan;
+    static int rakipPuan;
+    static int bitirme;
 
     public static JFrame jFrame = new JFrame();
 
@@ -102,7 +99,7 @@ public class ScrabbleGame_ {
 
     public static void ReadFromServer(Message msg) {
         ArrayList msgContent = (ArrayList) msg.content;
-        
+
         yazilanHarfler.add(msgContent);
 
         Point point = (Point) msgContent.get(0);
@@ -113,7 +110,7 @@ public class ScrabbleGame_ {
         if ((String) msgContent.get(1) == "U") {
             yazilanHarflerinResimleri.add(u);
         }
-        
+
     }
 
     public static void selectLetter(String s) {
@@ -121,20 +118,23 @@ public class ScrabbleGame_ {
         if (s == "P") {
             isP = true;
             puan += 4;
+            System.out.println(puan);
         }
         if (s == "U") {
             isU = true;
+            puan += 2;
+            System.out.println(puan);
 
         }
 
     }
 
     public static void main(String[] args) {
-        
+
         harflerListesi.add(uHarfi);
         harflerListesi.add(pHarfi);
 
-        jFrame.setSize(618, 720);
+        jFrame.setSize(618, 1000);
 
         Client.Start("127.0.0.1", 2000);
 
@@ -142,7 +142,7 @@ public class ScrabbleGame_ {
         LinkedList<Kare> kutular = new LinkedList<>();
 
         JButton b1 = new JButton(RandomLetter());
-        b1.setBounds(35, 610, 45, 45);
+        b1.setBounds(25, 610, 45, 45);
         b1.setBackground(Color.yellow);
         jFrame.add(b1);
 
@@ -155,7 +155,7 @@ public class ScrabbleGame_ {
         });
 
         JButton b2 = new JButton(RandomLetter());
-        b2.setBounds(125, 610, 45, 45);
+        b2.setBounds(110, 610, 45, 45);
         b2.setBackground(Color.yellow);
         jFrame.add(b2);
 
@@ -167,7 +167,7 @@ public class ScrabbleGame_ {
         });
 
         JButton b3 = new JButton(RandomLetter());
-        b3.setBounds(215, 610, 45, 45);
+        b3.setBounds(195, 610, 45, 45);
         b3.setBackground(Color.yellow);
         jFrame.add(b3);
 
@@ -179,7 +179,7 @@ public class ScrabbleGame_ {
         });
 
         JButton b4 = new JButton(RandomLetter());
-        b4.setBounds(305, 610, 45, 45);
+        b4.setBounds(280, 610, 45, 45);
         b4.setBackground(Color.yellow);
         jFrame.add(b4);
 
@@ -191,7 +191,7 @@ public class ScrabbleGame_ {
         });
 
         JButton b5 = new JButton(RandomLetter());
-        b5.setBounds(395, 610, 45, 45);
+        b5.setBounds(365, 610, 45, 45);
         b5.setBackground(Color.yellow);
         jFrame.add(b5);
 
@@ -203,7 +203,7 @@ public class ScrabbleGame_ {
         });
 
         JButton b6 = new JButton(RandomLetter());
-        b6.setBounds(485, 610, 45, 45);
+        b6.setBounds(450, 610, 45, 45);
         b6.setBackground(Color.yellow);
         jFrame.add(b6);
         b6.addActionListener(new ActionListener() {
@@ -213,7 +213,7 @@ public class ScrabbleGame_ {
             }
         });
         JButton b7 = new JButton(RandomLetter());
-        b7.setBounds(485, 610, 45, 45);
+        b7.setBounds(535, 610, 45, 45);
         b7.setBackground(Color.yellow);
         jFrame.add(b7);
 
@@ -224,21 +224,55 @@ public class ScrabbleGame_ {
 
             }
         });
-        JButton Gonder = new JButton("Gonder");
-        Gonder.setBounds(485, 710, 45, 45);
-        Gonder.setBackground(Color.yellow);
+        JButton Gonder = new JButton("Hamle Yap");
+        Gonder.setBounds(250, 680, 100, 50);
+        Gonder.setBackground(Color.ORANGE);
         jFrame.add(Gonder);
 
         Gonder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Message msg = new Message(Message.Message_Type.Send);
-                
-                msg.content=data;
+
+                msg.content = data;
                 Client.Send(msg);
                 data = new ArrayList();
-                
+
             }
+        });
+
+        JButton Bitir = new JButton("Oyunu Bitir");
+        Bitir.setBounds(25, 680, 100, 50);
+        Bitir.setBackground(Color.ORANGE);
+        jFrame.add(Bitir);
+
+        Bitir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Message msg = new Message(Message.Message_Type.PuanSend);
+
+                msg.content = puan;
+                Client.Send(msg);
+
+                bitirme++;
+
+                if (bitirme == 2) {
+                    puanHesapla();
+                    Message msg2 = new Message(Message.Message_Type.RakipBitir);
+
+                    msg2.content = puan;
+                    Client.Send(msg2);
+
+                }
+                
+                
+                Bitir.setEnabled(false);
+                Gonder.setEnabled(false);
+                
+
+            }
+            
+
         });
 
         Color c = null;
@@ -307,7 +341,7 @@ public class ScrabbleGame_ {
 
                 if (isP) {
                     try {
-                        
+
                         Point point = sigdir(mouseClickX, mouseClickY);
                         yazilanHarflerinKordinatlari.add(point);
                         yazilanHarflerinResimleri.add(p);
@@ -316,18 +350,16 @@ public class ScrabbleGame_ {
                         data.add("P");
                         System.out.println("p ye yıklanto");
                         yazilanHarfler.add(data);
-                        
-                        
-                        
+
                         isP = false;
                     } catch (InterruptedException ex) {
                         Logger.getLogger(ScrabbleGame_.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
+
                 }
                 if (isU) {
                     try {
-                      
+
                         Point point = sigdir(mouseClickX, mouseClickY);
                         yazilanHarflerinKordinatlari.add(point);
                         yazilanHarflerinResimleri.add(u);
@@ -336,31 +368,27 @@ public class ScrabbleGame_ {
                         data.add("U");
                         System.out.println("u ya tıklandı");
                         yazilanHarfler.add(data);
-                        
-                        
-                        
-                       
+
                         isU = false;
                     } catch (InterruptedException ex) {
                         Logger.getLogger(ScrabbleGame_.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                
 
                 for (int i = 0; i < yazilanHarfler.size(); i++) {
-                    
+
                     for (int j = 0; j < harflerListesi.size(); j++) {
-                        
-                        if (((ArrayList)yazilanHarfler.get(i)).get(1).equals(harflerListesi.get(j).name)) {
+
+                        if (((ArrayList) yazilanHarfler.get(i)).get(1).equals(harflerListesi.get(j).name)) {
                             try {
-                               
-                                System.out.println("size"+yazilanHarfler.size());
+
+                                System.out.println("size" + yazilanHarfler.size());
                                 ArrayList<Object> a = (ArrayList<Object>) yazilanHarfler.get(i);
                                 System.out.println(a.get(0));
-                                Point p =(Point) a.get(0);
-                                
+                                Point p = (Point) a.get(0);
+
                                 g.drawImage(harflerListesi.get(j).resim, p.x, p.y, this);
-                                
+
                                 Thread.sleep(10);
                             } catch (InterruptedException ex) {
                                 Logger.getLogger(ScrabbleGame_.class.getName()).log(Level.SEVERE, null, ex);
@@ -370,7 +398,6 @@ public class ScrabbleGame_ {
                     }
 
                 }
-              
 
             }
         };
@@ -381,7 +408,6 @@ public class ScrabbleGame_ {
             public void mouseClicked(MouseEvent e) {
                 for (Kare k : kutular) {
                     if (k.x <= mouseClickX && k.x + k.width >= mouseClickX && k.y <= mouseClickY && k.y + k.width >= mouseClickY) { //mouseda tıkladığın kordinatı
-                       
 
                         JLabel l = new JLabel(selectedLetter);
                         l.setBounds(k.x, k.y, 40, 40);
@@ -428,6 +454,46 @@ public class ScrabbleGame_ {
     public static void cizdir(ArrayList<Point> kordinatlar) {
         data.addAll(kordinatlar);
         jFrame.repaint();
+
+    }
+
+    public static void puanHesapla() {
+        String metin = "";
+        String Puanlar = puan + "/"+rakipPuan;
+
+        if (puan > rakipPuan) {
+            metin = "Kazandınız";
+            
+            
+
+        } else if (puan == rakipPuan) {
+            metin = "BERABERE";
+
+        } else {
+            metin = "Kaybettiniz";
+
+        }
+
+        JButton Sonuc = new JButton(Puanlar);
+        Sonuc.setBounds(25, 800, 50, 50);
+        Sonuc.setBackground(Color.ORANGE);
+        jFrame.add(Sonuc);
+        
+        
+        
+        JButton PuanGoster = new JButton(metin);
+        PuanGoster.setBounds(225, 800, 200, 50);
+        PuanGoster.setBackground(Color.ORANGE);
+        jFrame.add(PuanGoster);
+        
+        
+        
+        jFrame.repaint();
+
+    }
+
+    public static void rakipBitir() {
+        puanHesapla();
 
     }
 
