@@ -9,7 +9,7 @@ import java.awt.Image;
 
 /**
  *
- * @author Fatih
+ * @author omer
  */
 public class harf {
     String name;

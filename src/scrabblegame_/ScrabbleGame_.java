@@ -34,7 +34,7 @@ import javax.swing.JPanel;
  */
 public class ScrabbleGame_ {
 
-    public static Image p = gorsel("C:\\Users\\Fatih\\Desktop\\ScrableGame\\ScrabbleGame\\src\\scrabblegame_\\gorseller\\p.png");
+    public static Image p = gorsel("C:\\Users\\Fatih\\Desktop\\ScrableGame\\ScrabbleGame\\src\\scrabblegame_\\gorseller\\p.png"); //Gorsellerin yolu verilmistir.
     public static Image u = gorsel("C:\\Users\\Fatih\\Desktop\\ScrableGame\\ScrabbleGame\\src\\scrabblegame_\\gorseller\\u.png");
     public static Image a = gorsel("C:\\Users\\Fatih\\Desktop\\ScrableGame\\ScrabbleGame\\src\\scrabblegame_\\gorseller\\a.png");
     public static Image k = gorsel("C:\\Users\\Fatih\\Desktop\\ScrableGame\\ScrabbleGame\\src\\scrabblegame_\\gorseller\\k.png");
@@ -62,8 +62,8 @@ public class ScrabbleGame_ {
     public static boolean isT;
     public static boolean isS;
 
-    public static ArrayList<Image> yazilanHarflerinResimleri = new ArrayList<Image>();
-    public static ArrayList<Point> yazilanHarflerinKordinatlari = new ArrayList<Point>();
+    public static ArrayList<Image> yazilanHarflerinResimleri = new ArrayList<Image>(); //Harflerin resimleri arrayliste atılmıştır.
+    public static ArrayList<Point> yazilanHarflerinKordinatlari = new ArrayList<Point>(); //Kordinatlar Point tipinde bir arrayliste atılmistir.
 
     public static harf uHarfi = new harf("U", u);
     public static harf pHarfi = new harf("P", p);
@@ -94,7 +94,7 @@ public class ScrabbleGame_ {
 
     public static JFrame jFrame = new JFrame();
 
-    public static String RandomLetter() {
+    public static String RandomLetter() { //Harfler ekrana random olarak gelmektedir.
         String[] strArr = { "B",  "M", "E", "T", "S","P", "O", "A", "K", "L", "U"};
         Random rand = new Random();
         return strArr[rand.nextInt(11)];
@@ -113,7 +113,7 @@ public class ScrabbleGame_ {
 
     }
 
-    public static Point sigdir(int a, int b) {
+    public static Point sigdir(int a, int b) { //Gorsellerin kutulara tam sığması icin yapilmistir.
         int x = a / 40;
         int y = b / 40;
 
@@ -133,7 +133,7 @@ public class ScrabbleGame_ {
 
     }
 
-    public static void ReadFromServer(Message msg) {
+    public static void ReadFromServer(Message msg) { //harfleri listeye ekleme islemidir.
         ArrayList msgContent = (ArrayList) msg.content;
 
         yazilanHarfler.add(msgContent);
@@ -178,7 +178,7 @@ public class ScrabbleGame_ {
 
     }
 
-    public static void selectLetter(String s) {
+    public static void selectLetter(String s) { //Secilen harfler belirlenmis olup puan ekleme islemi yapilmistir.
 
         if (s == "P") {
             isP = true;
@@ -255,19 +255,19 @@ public class ScrabbleGame_ {
         harflerListesi.add(sHarfi);
         
 
-        jFrame.setSize(618, 870);
+        jFrame.setSize(618, 870); //ekran boyutu
 
         Client.Start("127.0.0.1", 2000);
 
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        LinkedList<Kare> kutular = new LinkedList<>();
+        LinkedList<Kare> kutular = new LinkedList<>(); //ekrandaki kareler linklist de tutulmustur.
 
         JButton b1 = new JButton(RandomLetter());
         b1.setBounds(25, 610, 55, 45);
         b1.setBackground(Color.yellow);
         jFrame.add(b1);
 
-        b1.addActionListener(new ActionListener() {
+        b1.addActionListener(new ActionListener() { //Buton islemleri yapilmistir.
             @Override
             public void actionPerformed(ActionEvent e) {
                 selectedLetter = b1.getText();
@@ -395,7 +395,7 @@ public class ScrabbleGame_ {
 
         Color c = null;
         int count = 0;
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 15; i++) { //Ekrandaki karelerin renkleri belirlenmistir.
             for (int j = 0; j < 15; j++) {
                 if ((i == j || i == 14 - j) && i < 5) {
                     c = Color.PINK;
@@ -457,7 +457,7 @@ public class ScrabbleGame_ {
 
                 }
 
-                if (isP) {
+                if (isP) { //Harflere gore islemler yapilmistir.
                     try {
 
                         Point point = sigdir(mouseClickX, mouseClickY);
@@ -731,7 +731,7 @@ public class ScrabbleGame_ {
 
     }
 
-    public static void puanHesapla() {
+    public static void puanHesapla() { //Puan hesaplama islemleri yapilmistir.
         String metin = "";
         String Puanlar = "Puanınız: " + puan + " --- " + " Rakip Puan: " + rakipPuan;
 
